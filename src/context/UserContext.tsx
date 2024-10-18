@@ -32,7 +32,7 @@ const UserContextProvider: FC<UserContextProviderProps> = ({ children }) => {
     // Signup function
     const signup = async (name: string, email: string, password: string) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/signup', { name, email, password });
+            const response = await axios.post('http://localhost:5000/api/auth/signup', { name, email, password });
             setUser(response.data.user);
             localStorage.setItem('token', response.data.token);
         } catch (error) {
@@ -43,7 +43,7 @@ const UserContextProvider: FC<UserContextProviderProps> = ({ children }) => {
     // Login function
     const login = async (email: string, password: string) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/login', { email, password });
+            const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
             setUser(response.data.user);
             localStorage.setItem('token', response.data.token);
         } catch (error) {
@@ -61,7 +61,7 @@ const UserContextProvider: FC<UserContextProviderProps> = ({ children }) => {
         const token = localStorage.getItem('token');
         if (token) {
             try {
-                const response = await axios.get('/api/verifyToken', {
+                const response = await axios.get('http://localhost:5000/api/auth/verifyToken', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
