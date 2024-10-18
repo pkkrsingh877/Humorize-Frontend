@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
     AppBar,
     Box,
@@ -22,9 +22,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddIcon from '@mui/icons-material/Add';
 import ListIcon from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
+    const userContext = useContext(UserContext);
+    const user = userContext?.user;
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
@@ -103,11 +106,17 @@ const Navbar = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Humorize
                     </Typography>
-                    <Button color="inherit">
-                        <Link to="/auth/login" style={{ textDecoration: 'none', color: 'white' }}>
-                            Login
-                        </Link>
-                    </Button>
+                    {user ? (
+                        <Typography variant="body1" sx={{ color: 'white' }}>
+                            Welcome, {user.name}!
+                        </Typography>
+                    ) : (
+                        <Button color="inherit">
+                            <Link to="/auth/login" style={{ textDecoration: 'none', color: 'white' }}>
+                                Login
+                            </Link>
+                        </Button>
+                    )}
                 </Toolbar>
             </AppBar>
             {/* Drawer Component */}
