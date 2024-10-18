@@ -8,40 +8,42 @@ const Signup = () => {
             noValidate
             autoComplete="off"
         >
-            <FormControl sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '1.5rem',
-                padding: '5rem'
-            }}>
-                <Typography variant="h3" component="h3" sx={{ textAlign: 'center' }}>
-                    Signup
-                </Typography>
-                <TextField
-                    id="outlined"
-                    label="Name"
-                    type="text"
-                    required
-                />
-                <TextField
-                    id="outlined"
-                    label="Email"
-                    type="email"
-                    required
-                />
-                <TextField
-                    id="outlined-password-input"
-                    label="Password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                />
-                <Button variant="contained" startIcon={<AppRegistrationIcon />}>
-                    Signup
-                </Button>
-            </FormControl>
+            <form action="http://localhost:500/api/auth/signup" method="POST">
+                <FormControl sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '1.5rem',
+                    padding: '5rem'
+                }}>
+                    <Typography variant="h3" component="h3" sx={{ textAlign: 'center' }}>
+                        Signup
+                    </Typography>
+                    <TextField
+                        id="outlined"
+                        label="Name"
+                        type="text"
+                        required
+                    />
+                    <TextField
+                        id="outlined"
+                        label="Email"
+                        type="email"
+                        required
+                    />
+                    <TextField
+                        id="outlined-password-input"
+                        label="Password"
+                        type="password"
+                        autoComplete="current-password"
+                        required
+                    />
+                    <Button variant="contained" startIcon={<AppRegistrationIcon />}>
+                        Signup
+                    </Button>
+                </FormControl>
+            </form>
         </Box>
     );
 }
