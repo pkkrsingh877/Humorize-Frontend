@@ -1,22 +1,28 @@
 import { Box, TextField, FormControl, Typography, Button } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
+import { UserContext } from '../../context/UserContext';
 
 const CreateJoke = () => {
     const [joke, setJoke] = useState('');
+    const userContext = useContext(UserContext);
+    const user = userContext?.user;
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const jokeData = { joke };
-
         try {
-            const response = await axios.post('http://localhost:5000/api/joke', jokeData);
-            if (response) {
-                console.log('User logged in successfully:', response.data);
+            if (user) {
+                const token = localStorage.getItem('token');
+                const jokeData = { joke, creator: user._id };
+                await axios.post('http://localhost:5000/api/jokes', jokeData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Include token in the headers
+                    }
+                });
             }
             navigate('/');
         } catch (error) {

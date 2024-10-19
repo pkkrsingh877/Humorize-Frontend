@@ -16,24 +16,35 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+interface Creator {
+    _id: string;    // Unique identifier for the creator
+    name: string;   // Name of the creator
+    email: string;  // Email of the creator
+    role: string;   // Role of the creator
+}
+
 interface Joke {
-    _id: string;  // Assuming you have an _id field from MongoDB
-    joke: string;
-    impressed: number;
-    unimpressed: number;
-    displeased: number;
-    creatorId: string;  // Assuming the creatorId is a string
-    createdAt: string;  // Assuming createdAt is returned as a string
+    _id: string;          // Unique identifier for the joke
+    joke: string;         // The joke text
+    impressed: number;    // Number of impressed reactions
+    unimpressed: number;  // Number of unimpressed reactions
+    displeased: number;   // Number of displeased reactions
+    creatorId: string;    // ID of the creator
+    createdAt: string;    // Date the joke was created
 }
 
 const Joke = () => {
-    const [joke, setJoke] = useState<Joke | null>(null); // Use null for an initial empty state
+    const [joke, setJoke] = useState<Joke | null>(null);
+    const [creator, setCreator] = useState<Creator | null>(null); // State for the creator
     const { id } = useParams();
 
     const fetchJoke = async () => {
         try {
             const response = await axios.get(`http://localhost:5000/api/joke/${id}`);
             setJoke(response.data);
+            // Fetch creator details using creatorId
+            const creatorResponse = await axios.get(`http://localhost:5000/api/creator/${response.data.creatorId}`);
+            setCreator(creatorResponse.data);
         } catch (error) {
             console.error("Error fetching joke", error);
         }
@@ -43,8 +54,8 @@ const Joke = () => {
         fetchJoke();
     }, [id]);
 
-    if (!joke) {
-        return <p>Joke not available.</p>;
+    if (!joke || !creator) {
+        return <p>Joke or creator not available.</p>;
     }
 
     return (
@@ -53,7 +64,7 @@ const Joke = () => {
                 <CardHeader
                     avatar={
                         <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                            {joke.creatorId.charAt(0).toUpperCase()} {/* Display first letter of creator */}
+                            {creator.name.charAt(0).toUpperCase()} {/* Display first letter of creator's name */}
                         </Avatar>
                     }
                     action={
@@ -61,7 +72,7 @@ const Joke = () => {
                             <MoreVertIcon />
                         </IconButton>
                     }
-                    title={`Created by: ${joke.creatorId}`} // Adjust title based on data
+                    title={`Created by: ${creator.name}`} // Use the creator's name
                     subheader={new Date(joke.createdAt).toLocaleDateString()} // Display created date
                 />
                 <CardContent>

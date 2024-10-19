@@ -28,6 +28,7 @@ const Navbar = () => {
     const [open, setOpen] = useState(false);
     const userContext = useContext(UserContext);
     const user = userContext?.user;
+    const logout = userContext?.logout;
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
@@ -52,14 +53,16 @@ const Navbar = () => {
                         <ListItemText primary={'Add Jokes'} />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} to='/jokes/user/:id'>
-                        <ListItemIcon>
-                            <ListIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'My Jokes'} />
-                    </ListItemButton>
-                </ListItem>
+                {user &&
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to={`/jokes/user/${user._id}`}>
+                            <ListItemIcon>
+                                <ListIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={'My Jokes'} />
+                        </ListItemButton>
+                    </ListItem>
+                }
                 <ListItem disablePadding>
                     <ListItemButton component={Link} to='/jokes/user/favorite'>
                         <ListItemIcon>
@@ -107,9 +110,18 @@ const Navbar = () => {
                         Humorize
                     </Typography>
                     {user ? (
-                        <Typography variant="body1" sx={{ color: 'white' }}>
-                            Welcome, {user.name}!
-                        </Typography>
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1rem'
+                        }}>
+                            <Typography variant="body1" sx={{ color: 'white' }}>
+                                Welcome, {user.name}!
+                            </Typography>
+                            <Button color="inherit" onClick={logout} sx={{ color: 'white' }}>
+                                Logout
+                            </Button>
+                        </Box>
                     ) : (
                         <Button color="inherit">
                             <Link to="/auth/login" style={{ textDecoration: 'none', color: 'white' }}>

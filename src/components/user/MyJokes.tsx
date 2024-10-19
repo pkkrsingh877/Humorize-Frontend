@@ -12,8 +12,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { UserContext } from '../../context/UserContext';
 
 interface Creator {
     _id: string;    // Unique identifier for the creator
@@ -34,18 +35,22 @@ interface Joke {
     createdAt: string;     // Date the joke was created
 }
 
-const Jokes = () => {
+const MyJokes = () => {
     const [jokes, setJokes] = useState([]);
+    const userContext = useContext(UserContext);
+    const user = userContext?.user;
 
     const fetchJokes = async () => {
-        const response = await axios.get('http://localhost:5000/api/jokes/');
+        const response = await axios.get(`http://localhost:5000/api/jokes/${user?._id}`);
         console.log(response.data)
         setJokes(response.data);
     };
 
     useEffect(() => {
-        fetchJokes();
-    }, []);
+        if (user) {
+            fetchJokes();
+        }
+    }, [user]);
 
     return (
         <section>
@@ -102,4 +107,4 @@ const Jokes = () => {
     );
 }
 
-export default Jokes;
+export default MyJokes;

@@ -7,6 +7,7 @@ import CreateJoke from './components/jokes/CreateJoke';
 import UpdateJoke from './components/jokes/UpdateJoke';
 import Jokes from './components/jokes/Jokes';
 import FavoriteJokes from './components/jokes/FavoriteJokes';
+import MyJokes from './components/user/MyJokes';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
             <Route path='/jokes/add' element={<CreateJoke />} />
             <Route path='/jokes/:id/update' element={<UpdateJoke />} />
             <Route path='/jokes/favorite' element={<FavoriteJokes />} />
+            <Route path='/jokes/myjokes' element={<MyJokes />} />
           </Routes>
         </main>
       </Router>
