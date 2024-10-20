@@ -20,4 +20,5 @@
 2. Admin should be able to accept Approver request.
 3. Admin should be able to reject Approver request.
 4. Approver should be able to Approve jokes.
+5. Approver should be able to delete jokes.
 
